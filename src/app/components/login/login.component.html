@@ -1,0 +1,40 @@
+<div class="col-9">
+    <div class="card card-primary"  *ngIf="!isLoggedIn">
+        <div class="card-header">
+            <h3> Connexion</h3>
+        </div>
+        <form [formGroup]="loginForm">
+            <div class="card-body">
+                <div class="alert-danger" *ngIf="isLoginFailed">
+                    <p>{{ errorMessage }}</p>
+                </div>
+                <div class="form-group">
+                    <label for="username">Login</label>
+                    <input type="text" class="form-control" id="username" formControlName="username" placeholder="Enter email">
+                    <div class="alert-danger" *ngIf="isLoginFailed">
+                        <div *ngIf="!loginForm.get('username')?.valid">Username is required</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" formControlName="password" placeholder="Password">
+                    <div class="alert-danger" *ngIf="isLoginFailed">
+                        <div *ngIf="!loginForm.get('password')?.valid">password is required</div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary" (click)="login()">Se connecter</button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="card-body" *ngIf="isLoggedIn">
+        <div class="alert-success" >
+            <h1> Connexion réussie  </h1>
+            {{ goToAccueil() }}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="card">
+    <div class="card-header">
+      <h3>{{ titre }}</h3>
+    </div>
+    <div class="card-body">
+      <button class="btn btn-primary" routerLink="/mariage/enregistrer"> Enregistrer un mariage </button> 
+      <br>
+      <br>
+    
+      <!-- <table mat-table [dataSource]="dataSource" class="table table-bordered table-hover dataTable dtr-inline" > -->
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table table-striped" >
+          <ng-container matColumnDef="numeroActe">
+              <th mat-header-cell *matHeaderCellDef> N° Acte </th>
+              <td class="odd" mat-cell *matCellDef="let mariage"> {{mariage.numeroActe}} </td>
+            </ng-container>
+          <ng-container matColumnDef="epoux">
+              <th mat-header-cell *matHeaderCellDef> Epoux </th>
+              <td mat-cell *matCellDef="let mariage"> {{mariage.epoux.nom+' '+mariage.epoux.prenoms }} </td>
+            </ng-container>
+          <ng-container matColumnDef="epouse">
+              <th mat-header-cell *matHeaderCellDef> Epouse </th>
+              <td mat-cell *matCellDef="let mariage"> {{mariage.epouse.nom+' '+mariage.epouse.prenoms }} </td>
+            </ng-container>
+          <ng-container matColumnDef="agentDeclareur">
+              <th mat-header-cell *matHeaderCellDef> Agent déclareur </th>
+              <td mat-cell *matCellDef="let mariage"> {{mariage.agentDeclareur}} </td>
+            </ng-container>
+          <ng-container matColumnDef="dateMariage">
+              <th mat-header-cell *matHeaderCellDef> Date de mariage </th>
+              <td mat-cell *matCellDef="let mariage"> {{mariage.dateMariage | date :'dd/MM/YYYY HH:mm'}} </td>
+          </ng-container>
+          <ng-container matColumnDef="dateDeclaration">
+              <th mat-header-cell *matHeaderCellDef> Date de déclaration </th>
+              <td mat-cell *matCellDef="let mariage"> {{mariage.dateDeclaration | date :'dd/MM/yyyy HH:mm'}} </td>
+          </ng-container>
+          <ng-container matColumnDef="rendezvous">
+              <th mat-header-cell *matHeaderCellDef> Date rendez-vous </th>
+              <td mat-cell *matCellDef="let mariage"> {{mariage.rendezvous | date :'dd/MM/yyyy HH:mm'}} </td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let mariage"> 
+                <a (click)="goToForm(mariage)" aria-label="Modifier">
+                  <mat-icon *ngIf="mariage.statutActe!='SIGNE'" class="fa fa-thin fa-pen"></mat-icon>
+                  <mat-icon *ngIf="mariage.statutActe=='SIGNE'" class="fa fa-thin fa-file-pdf"></mat-icon>
+                  <mat-icon *ngIf="mariage.statutActe=='SIGNE'" class="fa fa-thin fa-search"></mat-icon>
+                </a> 
+                <a (click)="goToRdv(mariage)" *ngIf="mariage.statutActe=='APPROUVE' && droits.includes('RDV')" aria-label="RDV">
+                  <button class="btn btn-primary" >RDV</button>
+                  <!-- <mat-icon *ngIf="mariage.statutActe=='VALIDE'" class="fa fa-thin fa-search"></mat-icon> -->
+                </a> 
+              </td>
+          </ng-container>
+          
+          <tr mat-header-row *matHeaderRowDef="colonnes"></tr>
+          <tr mat-row *matRowDef="let row; columns: colonnes;"></tr>
+          
+      </table>
+
+      <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10,20]" showFirstLastButtons> </mat-paginator>
+    </div>
+  </div>

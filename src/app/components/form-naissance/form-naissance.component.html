@@ -1,0 +1,136 @@
+<div class="card">
+    <div class="card-header">
+        <h3>Enregistrer une naissance</h3>
+    </div>
+    <form [formGroup]="formNaissance" *ngIf="formNaissance">
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="typeDeclaration" class="form-label"> Type déclaration:</label>
+                <!-- <input type="text" class="form-control" formControlName="typeDeclaration" id="typeDeclaration"> -->
+                <select class="form-select" formControlName="typeDeclaration" aria-label="Sélectionnez...">
+                    <option value="NORMAL" selected>Normal</option>
+                    <option value="RETARD">En retard</option>
+                </select>
+                <!-- <mat-select id="typeDeclaration" formControlName="typeDeclaration">
+                    <mat-option *ngFor="let type of typeNaissance" [value]="type.id">
+                    {{type}}
+                    </mat-option>
+                </mat-select> -->
+            </div>
+            <div class="mb-3">
+                <label for="numeroExtrait" class="form-label"> N° Extrait:</label>
+                <input type="text" class="form-control" formControlName="numeroExtrait" id="numeroExtrait" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="enfantNom" class="form-label"> Nom nouveau-né:</label>
+                <input type="text" class="form-control" formControlName="enfantNom" id="enfantNom" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="enfantPrenom" class="form-label"> Prénoms nouveau-né:</label>
+                <input type="text" class="form-control" formControlName="enfantPrenom" id="enfantPrenom" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="enfantLieuNaissance" class="form-label"> Lieu de naissance:</label>
+                <input type="text" class="form-control" formControlName="enfantLieuNaissance"  id="enfantLieuNaissance">
+            </div>
+            <div class="mb-3">
+                <label for="enfantDateHeureNaissance" class="form-label"> Date et heure de naissance:</label>
+                <input type="datetime-local" class="form-control" formControlName="enfantDateHeureNaissance"  id="enfantDateHeureNaissance" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="pereNom" class="form-label"> Nom du père:</label>
+                <input type="text" class="form-control" formControlName="pereNom" id="pereNom" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="perePrenom" class="form-label"> Prénom du père </label>
+                <input type="text" class="form-control" formControlName="perePrenom" id="perePrenom" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="pereNationalite" class="form-label"> Nationalité du père:</label>
+                <input type="text" class="form-control" formControlName="pereNationalite" id="pereNationalite" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="pereProfession" class="form-label"> Profession du père:</label>
+                <input type="text" class="form-control" formControlName="pereProfession" id="pereProfession" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="pereResidence" class="form-label"> Lieu résidence père:</label>
+                <input type="text" class="form-control" formControlName="pereResidence"  id="pereResidence" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="pereContact" class="form-label"> Contact du père:</label>
+                <input type="text" class="form-control" formControlName="pereContact" id="pereContact" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="pereEmail" class="form-label"> Email du père:</label>
+                <input type="email" class="form-control" formControlName="pereEmail" id="pereEmail" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="mereNom" class="form-label"> Nom de la mère:</label>
+                <input type="text" class="form-control" formControlName="mereNom"  id="mereNom" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="merePrenom" class="form-label"> Prénom de la mère:</label>
+                <input type="text" class="form-control" formControlName="merePrenom"  id="merePrenom" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="mereNationalite" class="form-label"> Nationalité de la mère:</label>
+                <input type="text" class="form-control" formControlName="mereNationalite" id="mereNationalite" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="mereProfession" class="form-label"> Profession de la mère:</label>
+                <input type="text" class="form-control" formControlName="mereProfession" id="mereProfession" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="mereResidence" class="form-label"> Lieu de résidence de la mère:</label>
+                <input type="text" class="form-control" formControlName="mereResidence" id="mereResidence" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="mereContact" class="form-label"> Contact de la mère:</label>
+                <input type="text" class="form-control" formControlName="mereContact"  id="mereContact" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="mereEmail" class="form-label"> Email de la mère:</label>
+                <input type="email" class="form-control" formControlName="mereEmail" id="mereEmail" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="dateHeureDeclaration" class="form-label"> Date et heure de déclaration:</label>
+                <input type="datetime-local" class="form-control" formControlName="dateHeureDeclaration" id="dateHeureDeclaration" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="agentDeclareur" class="form-label"> Agent déclareur:</label>
+                <input type="text" class="form-control" formControlName="agentDeclareur" id="agentDeclareur" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="interprete" class="form-label"> Nom de l'interprète:</label>
+                <input type="text" class="form-control" formControlName="interprete" id="interprete" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="pereExtrait" class="form-label"> CNI du père:</label>
+                <input type="text" class="form-control" formControlName="pereExtrait" id="pereExtrait" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="mereExtrait" class="form-label"> CNI de la mère :</label>
+                <input type="text" class="form-control" formControlName="mereExtrait" id="mereExtrait" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="certificatNaissance" class="form-label"> Certificat de naissance :</label>
+                <input type="text" class="form-control" formControlName="certificatNaissance" id="certificatNaissance" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            <!-- <div class="mb-3">
+                <label for="carnetNaissance" class="form-label"> Carnet de naissance:</label>
+                <input type="text" class="form-control" formControlName="carnetNaissance" id="carnetNaissance">
+            </div> -->
+            <div class="mb-3">
+                <label for="agentLecteur" class="form-label"> Agent lecteur:</label>
+                <input type="text" class="form-control" formControlName="agentLecteur" id="agentLecteur" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-danger" (click)='goToListe(naissance.statutActe!)'> Retour</button>
+            <button class="btn btn-primary float-right" *ngIf="!naissance.id" (click)='enregistrerNaissance()'> Enregistrer</button>
+            <button class="btn btn-success float-right" *ngIf="naissance.id && naissance.statutActe==='EN_ATTENTE' && droits.includes('VALIDER')" (click)='majNaissance()'> Valider</button>
+        </div>
+
+    </form>
+</div>

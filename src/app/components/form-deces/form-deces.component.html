@@ -1,0 +1,110 @@
+<div class="card">
+    <div class="card-header">
+        <h3>Enregistrer un décès</h3>
+    </div>
+    <form [formGroup]="formDeces" *ngIf="formDeces" >
+        <div class="card-body">
+        
+            <div class="mb-3">
+                <label for="numeroActe" class="form-label"> N° Acte:</label>
+                <input type="text" class="form-control" formControlName="numeroActe" id="numeroActe" [readonly]="deces.statutActe==='VALIDE'">
+            </div>
+
+            <div class="mb-3">
+                <label for="dateDeces" class="form-label"> Le (Date et heure de deces):</label>
+                <input type="datetime-local" class="form-control" formControlName="dateDeces"  id="dateDeces" [readonly]="deces.statutActe==='VALIDE'">
+            </div>
+            
+            <div class="mb-3">
+                <label for="lieuDeces" class="form-label"> Lieu de deces:</label>
+                <input type="text" class="form-control" formControlName="lieuDeces"  id="enfantLieuDeces" placeholder="lieu du décès">
+            </div>
+            <div class="mb-3">
+                <label for="defuntNom" class="form-label"> est décédé :</label>
+                <input type="text" class="form-control" formControlName="defuntNom"  id="defuntNom" placeholder="nom"> 
+                <input type="text" class="form-control" formControlName="defuntPrenom"  id="defuntPrenom" placeholder="prénoms">
+            </div>
+            <div class="mb-3">
+                <!-- <label for="defuntPrenom" class="form-label"> Prénoms:</label> -->
+                <!-- <input type="text" class="form-control" formControlName="defuntPrenom"  id="defuntPrenom" placeholder="prénoms">  -->
+                
+            </div>
+            <div class="mb-3">
+                <label for="defuntProfession" class="form-label"> Profession:</label>
+                <input type="text" class="form-control" formControlName="defuntProfession"  id="defuntProfession"> 
+                
+            </div>
+            <div class="mb-3">
+                <label for="defuntResidence" class="form-label"> domicilié à:</label>
+                <input type="text" class="form-control" formControlName="defuntResidence"  id="defuntResidence"> 
+                
+            </div>
+            <div class="mb-3">
+                <label for="defuntDateNaissance" class="form-label"> Né le:</label>
+                <input type="datetime-local" class="form-control" formControlName="defuntDateNaissance"  id="defuntDateNaissance"> 
+                
+            </div>
+            <div class="mb-3">
+                <label for="defuntLieuNaissance" class="form-label"> à:</label>
+                <input type="text" class="form-control" formControlName="defuntLieuNaissance"  id="defuntLieuNaissance"> 
+                
+            </div>
+            
+            
+            <div class="mb-3">
+                <label for="pereNom" class="form-label"> De:</label>
+                <input type="text" class="form-control" id="pereNom" formControlName="pereNom" [readonly]="deces.statutActe==='VALIDE'" placeholder="Nom du père">
+                <input type="text" class="form-control" id="perePrenom" formControlName="perePrenom" [readonly]="deces.statutActe==='VALIDE'" placeholder="Prénoms du père">
+            </div>
+            <div class="mb-3">
+                <label for="perePrenom" class="form-label"> domicilié à: </label>
+                <input type="text" class="form-control" id="pereResidence" formControlName="pereResidence" [readonly]="deces.statutActe==='VALIDE'">
+
+            </div>
+            
+            <div class="mb-3">
+                <label for="mereNom" class="form-label"> et de:</label>
+                <input type="text" class="form-control"  id="mereNom" formControlName="mereNom" [readonly]="deces.statutActe==='VALIDE'" placeholder="Nom de la mère">
+                <input type="text" class="form-control"  id="merePrenom" formControlName="merePrenom" [readonly]="deces.statutActe==='VALIDE'" placeholder="Prénoms de la mère">
+            </div>
+            <div class="mb-3">
+                <label for="merePrenom" class="form-label"> domiciliée à:</label>
+                <input type="text" class="form-control"  id="mereResidence" formControlName="mereResidence" [readonly]="deces.statutActe==='VALIDE'">
+            </div>
+            
+            <div class="mb-3">
+                <label for="dateDeclaration" class="form-label"> Dressé le:</label>
+                <input type="datetime-local" class="form-control" formControlName="dateDeclaration" id="dateDeclaration" [readonly]="deces.statutActe==='VALIDE'">
+            </div>
+            <div class="mb-3">
+                <label for="agentDeclareur" class="form-label"> sur la déclaration de:</label>
+                <input type="text" class="form-control" formControlName="agentDeclareur" id="agentDeclareur" [readonly]="deces.statutActe==='VALIDE'" placeholder="Nom du déclarant">
+            </div>
+            <div class="mb-3">
+                <label for="interprete" class="form-label"> Avec l'assistance de :</label>
+                <input type="text" class="form-control" formControlName="interprete" id="interprete" [readonly]="deces.statutActe==='VALIDE'">
+                <p>interprète ayant prêté devant nous le serment prévu par la loi.</p>
+            </div>
+            <div class="mb-3">
+                <label for="agentLecteur" class="form-label"> Agent lecteur:</label>
+                <input type="text" class="form-control" formControlName="agentLecteur" id="agentLecteur" [readonly]="deces.statutActe==='VALIDE'">
+            </div>
+            <!-- <div class="mb-3">
+                <label for="certificatDeces" class="form-label"> Certificat de deces :</label>
+                <input type="text" class="form-control"  id="certificatDeces" [readonly]="deces.statutActe==='VALIDE'">
+            </div> -->
+            <!-- <div class="mb-3">
+                <label for="carnetDeces" class="form-label"> Carnet de deces:</label>
+                <input type="text" class="form-control" formControlName="carnetDeces" id="carnetDeces">
+            </div> -->
+        </div>
+        <div class="card-footer">
+            
+            <!-- <div class="col-12"> -->
+                <button class="btn btn-danger" (click)='goToListe(deces.statutActe!)'> Retour</button>
+                <button class="btn btn-primary float-right" *ngIf="!deces.id" (click)='enregistrerDeces()'> Enregistrer</button>
+                <button class="btn btn-success float-right" *ngIf="deces.id && deces.statutActe==='EN_ATTENTE' && droits?.includes('VALIDER') " (click)='majDeces()'> Valider</button>
+            <!-- </div> -->
+        </div>
+    </form>
+</div>

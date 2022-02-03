@@ -1,0 +1,33 @@
+<div class="card" *ngIf="mariage.id == null">
+    <div class="card-body">
+        <h3> Aucun mariage sélectionné</h3>
+        <br>
+        <br>
+<button class="btn btn-primary" routerLink="/mariage/liste/attente">Retour à la liste des mariages</button>
+    </div>
+</div>
+
+<div class="card" *ngIf="mariage.id != null ">
+   
+   
+    <div class="card-header">
+        <h3> Rendez vous pour le mariage de {{ mariage?.epoux?.nom+' '+mariage?.epoux?.prenoms}} et 
+            {{ mariage?.epouse?.nom+' '+mariage?.epouse?.prenoms}}
+        </h3>
+    </div>
+
+    <form [formGroup]="formRdv" *ngIf="formRdv">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="rendezvous" class="form-label"> Date du rendez-vous</label>
+                <input type="datetime-local" class="form-control" name="rendezvous" formControlName="rendezvous">
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="button-group">
+                <input type="button" class="btn btn-danger" value="Retour">
+                <input type="button" class="btn btn-primary" (click)="majMariage()" value="Enregistrer">
+            </div>
+        </div>
+    </form>
+</div>

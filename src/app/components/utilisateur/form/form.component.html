@@ -1,0 +1,25 @@
+<div class="card">
+    <div class="card-header">
+        <h3> Enregistrement nouvel utilisateur</h3>
+    </div>
+    <form [formGroup]="formUser">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="name">Nom & prénoms</label>
+                <input type="text" class="form-control" formControlName="name" id="name">
+            </div>
+            <div class="form-group">
+                <label for="username">Identifiant</label>
+                <input type="text" class="form-control" formControlName="username" id="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="text" class="form-control" formControlName="password" id="password">
+            </div>
+        </div>
+        <div class="card-footer">
+            <input type="button" class="btn btn-primary" (click)="saveUser()" value="Enregistrer">
+        </div>
+    </form>
+    
+</div>
