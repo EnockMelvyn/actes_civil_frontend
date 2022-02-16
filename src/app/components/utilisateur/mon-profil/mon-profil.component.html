@@ -1,0 +1,29 @@
+<div class="card">
+    <div class="card-header">
+        <h3> Mon profil</h3>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="formUser">
+            <div class="form-group">
+                <label for="username">username</label>
+                <input type="text" class="form-control" formControlName="username" [readonly]="!modificationEnCours">
+            </div>
+            <div class="form-group">
+                <label for="name">Nom & prénoms</label>
+                <input type="text" class="form-control" formControlName="name" [readonly]="!modificationEnCours">
+            </div>
+            <div class="form-group">
+                <label for="roles">Rôles</label>
+                <mat-chip-list aria-label="Rôles" name="roles">
+                    <mat-chip *ngFor="let role of user.roles">{{ role }}</mat-chip>
+                    <mat-chip *ngIf="user?.roles?.length==0">Aucun rôle</mat-chip>
+                </mat-chip-list>
+            </div>
+            <div class="btn-group">
+                <input type="button" *ngIf="!modificationEnCours" class="btn btn-sm btn-primary" value="Modifier informations" (click)="modificationEnCours=!modificationEnCours">
+                <input type="button" *ngIf="modificationEnCours" class="btn btn-sm btn-success" value="Valider modifications" (click)="modificationEnCours=!modificationEnCours">
+                <input type="button" class="btn btn-primary" value="Changer mot de passe">
+            </div>
+        </form>
+    </div>
+</div>
