@@ -33,7 +33,7 @@ export class ListService {
     }
   ]
 
-  roles = ["ROLE_ADMIN", "ROLE_USER"]
+  roles = ["ROLE_ADMIN", "ROLE_USER","ROLE_AGENT", "ROLE_CHEF_ADMINISTRATIF","ROLE_MAIRE"]
   typeNaissance = [
     {
       "id": "NORMAL",
@@ -42,6 +42,10 @@ export class ListService {
     {
       "id": "RETARD",
       "libelle": "En retard"
+    },
+    {
+      "id": "AUTRE",
+      "libelle": "Autre"
     }
   ]
   constructor() { }

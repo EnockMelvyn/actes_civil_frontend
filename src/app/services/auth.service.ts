@@ -27,4 +27,7 @@ export class AuthService {
   addRoleToUser(roleUser :any): Observable<any>{
     return this.http.post<any>(this.apiUserUrl+"/api/role/addtouser" ,roleUser)
   }
+  removeRoleToUser(roleUser :any): Observable<any>{
+    return this.http.post<any>(this.apiUserUrl+"/api/role/removetouser" ,roleUser)
+  }
 }
