@@ -35,6 +35,10 @@
                     <th mat-header-cell *matHeaderCellDef> N° Extrait </th>
                     <td mat-cell *matCellDef="let naissance"> {{naissance.numeroExtrait}} </td>
                   </ng-container>
+                <ng-container matColumnDef="typeNaissance">
+                    <th mat-header-cell *matHeaderCellDef> Type de naissance </th>
+                    <td mat-cell *matCellDef="let naissance"> {{naissance.typeNaissance}} </td>
+                  </ng-container>
                 <ng-container matColumnDef="enfant">
                     <th mat-header-cell *matHeaderCellDef> Nom et prénoms </th>
                     <td mat-cell *matCellDef="let naissance"> {{naissance.enfant.nom+' '+naissance.enfant.prenoms }} </td>
@@ -60,5 +64,6 @@
             </table>
             <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10,20]" showFirstLastButtons> </mat-paginator>
         </div>
+        <button mat-raised-btn class="btn btn-success float-right" (click)="exportToExcel()" > Exporter vers excel</button>
     </div>
 </div>

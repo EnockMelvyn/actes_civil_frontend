@@ -6,6 +6,10 @@
     <button class="btn btn-primary" (click)="goToForm({})"> Enregistrer une naissance </button> 
     <br>
     <br>
+
+    <div class="form-group">
+      <input class="form-control" matInput (keyup)="applyFilter($event)" placeholder="Rechercher" autocomplete="false">
+    </div>
   
     <table mat-table mat-sort [dataSource]="dataSource" class="mat-elevation-z8 table table-striped" >
         <ng-container matColumnDef="numeroExtrait">
@@ -16,6 +20,14 @@
             <th mat-header-cell *matHeaderCellDef> Nom et prénoms </th>
             <td mat-cell *matCellDef="let naissance"> {{naissance.enfant.nom+' '+naissance.enfant.prenoms }} </td>
           </ng-container>
+        <!-- <ng-container matColumnDef="enfantNom">
+            <th mat-header-cell *matHeaderCellDef> Nom</th>
+            <td mat-cell *matCellDef="let naissance"> {{naissance.enfant.nom }} </td>
+          </ng-container>
+        <ng-container matColumnDef="enfantPrenom">
+            <th mat-header-cell *matHeaderCellDef> Prénoms </th>
+            <td mat-cell *matCellDef="let naissance"> {{naissance.enfant.prenoms }} </td>
+          </ng-container> -->
         <ng-container matColumnDef="agentDeclareur">
             <th mat-header-cell *matHeaderCellDef> Agent déclareur </th>
             <td mat-cell *matCellDef="let naissance"> {{naissance.agentDeclareur}} </td>
@@ -31,9 +43,10 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> </th>
             <td mat-cell *matCellDef="let naissance"> 
+              <a [href]="chemin+naissance.id"><mat-icon *ngIf="naissance.statutActe=='VALIDE'" class="fa fa-thin fa-file-pdf"></mat-icon></a>
               <a (click)="goToForm(naissance)" aria-label="Modifier">
-                <mat-icon *ngIf="naissance.statutNaissance!='VALIDE'" class="fa fa-thin fa-pen"></mat-icon>
-                <mat-icon *ngIf="naissance.statutNaissance==='VALIDE'" class="fa fa-thin fa-search"></mat-icon>
+                <mat-icon *ngIf="naissance.statutActe!='VALIDE'" class="fa fa-thin fa-pen"></mat-icon>
+                <mat-icon *ngIf="naissance.statutActe=='VALIDE'" class="fa fa-thin fa-search"></mat-icon>
               </a> 
             </td>
         </ng-container>

@@ -1,6 +1,7 @@
 <div class="card">
     <div class="card-header">
-        <h3>Enregistrer une naissance</h3>
+        <h3 *ngIf="!naissance.id">Enregistrer une naissance</h3>
+        <h3 *ngIf="naissance.id">Informations de la naissance</h3>
     </div>
     <form [formGroup]="formNaissance" *ngIf="formNaissance">
         <div class="card-body">
@@ -10,6 +11,7 @@
                 <select class="form-select" formControlName="typeDeclaration" aria-label="Sélectionnez...">
                     <option value="NORMAL" selected>Normal</option>
                     <option value="RETARD">En retard</option>
+                    <option value="AUTRE">Autre</option>
                 </select>
                 <!-- <mat-select id="typeDeclaration" formControlName="typeDeclaration">
                     <mat-option *ngFor="let type of typeNaissance" [value]="type.id">
@@ -22,13 +24,15 @@
                 <input type="text" class="form-control" formControlName="numeroExtrait" id="numeroExtrait" [readonly]="naissance.statutActe==='VALIDE'">
             </div>
             <div class="mb-3">
-                <label for="enfantNom" class="form-label"> Nom nouveau-né:</label>
-                <input type="text" class="form-control" formControlName="enfantNom" id="enfantNom" [readonly]="naissance.statutActe==='VALIDE'">
-            </div>
-            <div class="mb-3">
                 <label for="enfantPrenom" class="form-label"> Prénoms nouveau-né:</label>
                 <input type="text" class="form-control" formControlName="enfantPrenom" id="enfantPrenom" [readonly]="naissance.statutActe==='VALIDE'">
             </div>
+
+            <div class="mb-3">
+                <label for="enfantNom" class="form-label"> Nom nouveau-né:</label>
+                <input type="text" class="form-control" formControlName="enfantNom" id="enfantNom" [readonly]="naissance.statutActe==='VALIDE'">
+            </div>
+            
             <div class="mb-3">
                 <label for="enfantLieuNaissance" class="form-label"> Lieu de naissance:</label>
                 <input type="text" class="form-control" formControlName="enfantLieuNaissance"  id="enfantLieuNaissance">
@@ -99,11 +103,11 @@
             </div>
             <div class="mb-3">
                 <label for="agentDeclareur" class="form-label"> Agent déclareur:</label>
-                <input type="text" class="form-control" formControlName="agentDeclareur" id="agentDeclareur" [readonly]="naissance.statutActe==='VALIDE'">
+                <input type="text" class="form-control" formControlName="agentDeclareur" id="agentDeclareur" readonly>
             </div>
             <div class="mb-3">
-                <label for="interprete" class="form-label"> Nom de l'interprète:</label>
-                <input type="text" class="form-control" formControlName="interprete" id="interprete" [readonly]="naissance.statutActe==='VALIDE'">
+                <label for="interprete" class="form-label"> Interprète:</label>
+                <input type="text" class="form-control" formControlName="interprete" id="interprete" readonly>
             </div>
             <div class="mb-3">
                 <label for="pereExtrait" class="form-label"> CNI du père:</label>
@@ -123,7 +127,7 @@
             </div> -->
             <div class="mb-3">
                 <label for="agentLecteur" class="form-label"> Agent lecteur:</label>
-                <input type="text" class="form-control" formControlName="agentLecteur" id="agentLecteur" [readonly]="naissance.statutActe==='VALIDE'">
+                <input type="text" class="form-control" formControlName="agentLecteur" id="agentLecteur" readonly>
             </div>
         </div>
         <div class="card-footer">

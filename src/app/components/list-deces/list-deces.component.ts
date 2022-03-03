@@ -8,6 +8,7 @@ import { Deces } from 'src/app/interfaces/deces';
 import { DataService } from 'src/app/services/data.service';
 import { DecesService } from 'src/app/services/deces.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-list-deces',
@@ -20,6 +21,7 @@ export class ListDecesComponent implements OnInit, AfterViewInit {
   titre = ''
   statut = ''
   statutActe = ''
+  chemin = environment.jasperserverURL+'/reports/Rapports/Deces.pdf?id='
   allDeces: Deces[] = []
   dataSource : MatTableDataSource<Deces> = new MatTableDataSource()
   // dataSource: 
@@ -57,7 +59,35 @@ export class ListDecesComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
       this.dataSource.paginator = this.paginator
+
+      this.dataSource.filterPredicate = (data, filter: string)  => {
+        const accumulator = (currentTerm : any, key : any) => {
+          return this.nestedFilterCheck(currentTerm, data, key);
+        };
+        const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+        // Transform the filter by converting it to lowercase and removing whitespace.
+        const transformedFilter = filter.trim().toLowerCase();
+        return dataStr.indexOf(transformedFilter) !== -1;
+      };
   }
+
+  applyFilter(event: any) {
+    this.dataSource.filter = event.target.value.trim().toLowerCase()  
+  }
+
+  nestedFilterCheck(search : any, data: any, key: any) {
+    if (typeof data[key] === 'object') {
+      for (const k in data[key]) {
+        if (data[key][k] !== null) {
+          search = this.nestedFilterCheck(search, data[key], k);
+        }
+      }
+    } else {
+      search += data[key];
+    }
+    return search;
+  }
+
   public getAllDeces(): void {
     this.decesService.getAllDecesByStatut(this.statutActe).subscribe(
       (response: any) => {

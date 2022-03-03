@@ -20,16 +20,18 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 })
 export class FormDecesComponent implements OnInit {
 
+  userConnected : User = {}
   deces: Deces = {}
   personnes: Personne[] = []
   statutActe: []
   formDeces : FormGroup
   myControl = new FormControl();
   filteredPersonnes: Observable<Personne[]> ;
-  droits: string []
+  droits: string [] = []
 
   constructor(private formBuilder: FormBuilder, private decesService: DecesService, private listService: ListService,
     private router: Router, private dataService: DataService, private personneService: PersonneService, private tokenStorageService: TokenStorageService) {
+      this.userConnected = this.tokenStorageService.getUser()
       if( this.tokenStorageService.getUser().roles.includes('ROLE_MAIRE')) {
         this.droits.push("VALIDER")
       }
@@ -38,7 +40,7 @@ export class FormDecesComponent implements OnInit {
       }
 
       this.deces=this.dataService.deces
-    this.formDeces= formBuilder.group({
+      this.formDeces= formBuilder.group({
       numeroActe:[this.deces.numeroActe, Validators.required],
       defuntNom: [ this.deces.defunt?.nom, Validators.required],
       defuntPrenom: [ this.deces.defunt?.prenoms, Validators.required],
@@ -57,9 +59,9 @@ export class FormDecesComponent implements OnInit {
       dateDeces: [this.deces.dateDeces],
       
       dateDeclaration: [this.deces.dateDeclaration],
-      agentDeclareur: [this.deces.agentDeclareur],
-      interprete: [this.deces.interprete],
-      agentLecteur: [this.deces.agentLecteur]
+      agentDeclareur: [this.deces.agentDeclareur ? this.deces.agentDeclareur : this.userConnected.username],
+      interprete: [this.deces.interprete ? this.deces.interprete : this.userConnected.username],
+      agentLecteur: [this.deces.agentLecteur ? this.deces.agentLecteur : this.userConnected.username]
     })
 
     this.statutActe = this.listService.getStatutActe()
@@ -110,8 +112,9 @@ export class FormDecesComponent implements OnInit {
   }
 
   public enregistrerDeces(): void {
-    
-    this.decesService.enregistrerDeces(this.buildObject()).subscribe(
+    let deces = this.buildObject()
+    deces.statutActe = "VALIDE"
+    this.decesService.enregistrerDeces(deces).subscribe(
       (response: Deces) => {
         this.deces = response
         alert("Décès enregistré")

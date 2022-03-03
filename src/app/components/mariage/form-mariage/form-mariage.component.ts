@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Mariage } from 'src/app/interfaces/mariage';
 import { PieceAdministrative } from 'src/app/interfaces/piece-administrative';
+import { User } from 'src/app/interfaces/user';
 import { DataService } from 'src/app/services/data.service';
 import { MariageService } from 'src/app/services/mariage.service';
 import { PieceAdministrativeService } from 'src/app/services/piece-administrative.service';
@@ -16,6 +17,7 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 })
 export class FormMariageComponent implements OnInit {
 
+  userConnected : User = {}
   mariage: Mariage = {}
   statutActe: []
   piecesAdmin: PieceAdministrative[] = []
@@ -29,24 +31,28 @@ export class FormMariageComponent implements OnInit {
     'id': "SEPARATION",
     'libelle': 'Séparation de biens' 
   }]
-  droits : string[]
+  droits : string[] = []
+  roles : string[]=[]
   // filteredPersonnes: Observable<Personne[]> ;
   constructor(private formBuilder: FormBuilder, private mariageService: MariageService, private router:Router,
     private dataService: DataService, private pieceAdminService: PieceAdministrativeService, private tokenStorageService: TokenStorageService) { 
-      if( this.tokenStorageService.getUser().roles.includes('ROLE_MAIRE')) {
+      this.userConnected = this.tokenStorageService.getUser()
+      for (let role of this.userConnected.roles!){
+        this.roles.push(role.name!)
+      }
+      if( this.roles.includes('ROLE_MAIRE')) {
         this.droits.push("SIGNER")
         this.droits.push("VALIDER")
-        this.droits.push("APPROUVER")
       }
-      if( this.tokenStorageService.getUser().roles.includes('ROLE_CHEF_ADMINISTRATIF')) {
+      if( this.roles.includes('ROLE_CHEF_ADMINISTRATIF')) {
         this.droits.push("VALIDER")
-        this.droits.push("APPROUVER")
       }
     }
 
   ngOnInit(): void {
     this.getAllPiecesAdmin()
     this.initialisationFormMariage()
+    console.log(this.mariage )
   }
 
   getAllPiecesAdmin() {
@@ -61,8 +67,12 @@ export class FormMariageComponent implements OnInit {
     this.mariageService.enregistrerMariage(mariage).subscribe(
       (response : Mariage) => {
         alert ("Mariage enregistré")
-        this.goToListe('EN_ATTENTE')
-        console.log(response)
+        this.router.navigateByUrl('/mariage/liste/attente')
+        .then(
+          ()=> {
+            window.location.reload()
+          }
+        )
       },
       (error : HttpErrorResponse) => {
         console.log(error.error)
@@ -70,13 +80,43 @@ export class FormMariageComponent implements OnInit {
     )
   }
 
+  public approuverMariage(): void {
+    let mariageNew : Mariage
+    mariageNew = this.buildObjetMariage()
+    mariageNew.pieces = this.mariage.pieces
+    mariageNew.id = this.mariage.id
+    mariageNew.statutActe = "APPROUVE"
+    console.log(mariageNew)
+    this.mariageService.updateMariage(mariageNew).subscribe(
+      (response: Mariage) => {
+        this.mariage = response
+        alert("Mariage approuvé")
+        this.router.navigateByUrl('/mariage/liste/approuve').then(
+          ()=> {
+            window.location.reload()
+          }
+        )
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error.error.message)
+        alert(error.error.message)
+      }
+    )
+  }
+
+
   public majMariage(statut : string): void {
-    let idMariage = this.mariage.id
-    this.mariage = this.buildObjetMariage()
-    this.mariage.id = idMariage
-    this.mariage.statutActe= statut
-    console.log(this.mariage)
-    this.mariageService.updateMariage(this.mariage).subscribe(
+    let mariageNew : Mariage
+    mariageNew = this.buildObjetMariage()
+    mariageNew.pieces = this.mariage.pieces
+    mariageNew.id = this.mariage.id
+    mariageNew.statutActe = statut
+    // let idMariage = this.mariage.id
+    // this.mariage = this.buildObjetMariage()
+    // this.mariage.id = idMariage
+    // this.mariage.statutActe= statut
+    console.log(mariageNew)
+    this.mariageService.updateMariage(mariageNew).subscribe(
       (response: Mariage) => {
         this.mariage = response
         alert("Acte de Mariage mis à jour")
@@ -91,6 +131,7 @@ export class FormMariageComponent implements OnInit {
 
   initialisationFormMariage() {
     this.mariage= this.dataService.mariage
+    // this.piecesFourni.setValue(this.mariage.pieces)
     this.formMariage = this.formBuilder.group({
       'dateMariage': [this.mariage.dateMariage],
       'lieuMariage': [this.mariage.lieuMariage],
@@ -116,10 +157,11 @@ export class FormMariageComponent implements OnInit {
       'temoinEpoux': [this.mariage.epouxTemoin],
       'temoinEpouse': [this.mariage.epouseTemoin],
       'numeroActe': [this.mariage.numeroActe],
-      'agentDeclareur': [this.mariage.agentDeclareur],
-      'interprete': [this.mariage.interprete],
+      'agentDeclareur': [this.mariage.agentDeclareur ? this.mariage.agentDeclareur : this.userConnected.username],
+      'interprete': [this.mariage.interprete ? this.mariage.interprete : this.userConnected.username],
       'pieces': [this.mariage.pieces]
     })
+
   }
 
   goToListe(statutListe: string){
@@ -127,6 +169,9 @@ export class FormMariageComponent implements OnInit {
     this.dataService.mariage= this.mariage
     let statutPage
     switch (statutListe) {
+      case 'SIGNE':
+        statutPage = 'signe'
+        break;
       case 'VALIDE':
         statutPage = 'valide'
         break;
@@ -137,7 +182,11 @@ export class FormMariageComponent implements OnInit {
         statutPage = 'attente'
         break;
     }
-    this.router.navigateByUrl('/mariage/liste/'+statutPage)
+    this.router.navigateByUrl('/mariage/liste/'+statutPage).then(
+      ()=> {
+        window.location.reload()
+      }
+    )
   
   }
 
@@ -177,9 +226,9 @@ export class FormMariageComponent implements OnInit {
       agentDeclareur:this.formMariage.get('agentDeclareur')?.value,
       interprete:this.formMariage.get('interprete')?.value,
       // pieces: this.formMariage.get('pieces')?.value
-      pieces: this.piecesFourni.value
+      pieces: this.piecesFourni.value 
     }
-
+    
     return mariage
   }
 }

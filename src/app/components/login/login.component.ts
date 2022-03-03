@@ -7,6 +7,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from 'src/app/interfaces/user';
 import { Router } from '@angular/router';
 import { Observable, Subscriber } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
 
 const helper = new JwtHelperService()
 @Component({
@@ -23,7 +24,7 @@ export class LoginComponent implements OnInit {
   roles : string [] = []
 
   constructor( private formBuilder: FormBuilder, private authService: AuthService, private tokenStorage : TokenStorageService,
-    private router : Router) { }
+    private router : Router, private userService: UserService) { }
 
   loginForm : FormGroup
   ngOnInit(): void {
@@ -49,10 +50,16 @@ export class LoginComponent implements OnInit {
         this.tokenStorage.saveToken(response.access_token);
         console.log(response.access_token)
         let tok = helper.decodeToken(response.access_token);
-        let user : User ;
-        user = {'username': tok.sub, 'roles': tok.roles}
+        let user : User = {} ;
+        this.userService.getUser(tok.sub).subscribe(
+          (response: User)=>{
+            user = response
+            this.tokenStorage.saveUser(user);
+          }
+        )
+        // user = {'username': tok.sub, 'roles': tok.roles}
 
-        this.tokenStorage.saveUser(user);
+        // this.tokenStorage.saveUser(user);
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
@@ -65,7 +72,7 @@ export class LoginComponent implements OnInit {
       (error: HttpErrorResponse) => {
         console.log(error.message)
         this.errorMessage = error.message;
-        this.isLoginFailed = false;
+        this.isLoginFailed = true;
       }
     )
   }

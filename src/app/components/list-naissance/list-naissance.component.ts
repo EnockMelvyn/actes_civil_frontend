@@ -10,6 +10,7 @@ import { Naissance } from 'src/app/interfaces/naissance';
 import { DataService } from 'src/app/services/data.service';
 import { NaissanceService } from 'src/app/services/naissance.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-list-naissance',
@@ -22,10 +23,11 @@ export class ListNaissanceComponent implements OnInit, AfterViewInit {
   titre = ''
   statut = ''
   statutNaissance = ''
+  chemin = environment.jasperserverURL+'/reports/Rapports/Naissance.pdf?id='
   naissances: Naissance[] = []
   dataSource : MatTableDataSource<Naissance> = new MatTableDataSource()
   // dataSource: 
-  colonnes= ['numeroExtrait','enfant', 'dateNaissance', 'dateDeclaration','agentDeclareur','actions' ]
+  colonnes= ['numeroExtrait','enfant','dateNaissance', 'dateDeclaration','agentDeclareur','actions' ]
   
   // 'pere','mere','langueDeclaration','nomInterprète','documents','agentLecteur','statutNaissance','typeNaissance'
   constructor(private naissanceService: NaissanceService, private route: ActivatedRoute,
@@ -57,8 +59,34 @@ export class ListNaissanceComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
       this.dataSource.paginator = this.paginator
+      
+      this.dataSource.filterPredicate = (data, filter: string)  => {
+        const accumulator = (currentTerm : any, key : any) => {
+          return this.nestedFilterCheck(currentTerm, data, key);
+        };
+        const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+        // Transform the filter by converting it to lowercase and removing whitespace.
+        const transformedFilter = filter.trim().toLowerCase();
+        return dataStr.indexOf(transformedFilter) !== -1;
+      };
   }
 
+  applyFilter(event: any) {
+    this.dataSource.filter = event.target.value.trim().toLowerCase()  
+  }
+
+  nestedFilterCheck(search : any, data: any, key: any) {
+    if (typeof data[key] === 'object') {
+      for (const k in data[key]) {
+        if (data[key][k] !== null) {
+          search = this.nestedFilterCheck(search, data[key], k);
+        }
+      }
+    } else {
+      search += data[key];
+    }
+    return search;
+  }
 
   public getAllNaissance(): void {
     this.naissanceService.getAllNaissancesStatut(this.statutNaissance).subscribe(
@@ -76,6 +104,9 @@ export class ListNaissanceComponent implements OnInit, AfterViewInit {
       }
     )
   }
+
+
+  
 
   public goToForm(naissance:Naissance) {
     this.dataService.setNaissance(naissance)

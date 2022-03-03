@@ -32,12 +32,16 @@ export class FormRdvMariageComponent implements OnInit {
   public majMariage(): void {
     console.log(this.formRdv.get('rendezvous')?.value)
     this.mariage.rendezvous = this.formRdv.get('rendezvous')?.value
-    this.mariage.statutActe = 'VALIDE'
+    // this.mariage.statutActe = 'VALIDE'
     this.mariageService.updateMariage(this.mariage).subscribe(
       (response: Mariage) => {
         this.mariage = response
         alert("Rendez-vous enregistré")
-        this.goToListe('VALIDE')
+        this.router.navigateByUrl('/mariage/liste/approuve').then(
+          ()=> {
+            window.location.reload()
+          }
+        )
       },
       (error: HttpErrorResponse) => {
         console.log(error.error.message)

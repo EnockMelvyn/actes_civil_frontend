@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Naissance } from 'src/app/interfaces/naissance';
 import { Personne } from 'src/app/interfaces/personne';
+import { User } from 'src/app/interfaces/user';
 import { DataService } from 'src/app/services/data.service';
 import { ListService } from 'src/app/services/list.service';
 import { NaissanceService } from 'src/app/services/naissance.service';
@@ -17,13 +18,14 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 export class FormNaissanceComponent implements OnInit {
   naissance: Naissance
 
+  userConnected : User = {}
   typeNaissance: []
   statutNaissance: []
   formNaissance : FormGroup
-  droits : string[]
+  droits : string[]=[]
   constructor(private formBuilder: FormBuilder, private naissanceService: NaissanceService, private listService: ListService,
     private router: Router, private dataService: DataService, private tokenStorageService : TokenStorageService) {
-
+      this.userConnected = this.tokenStorageService.getUser()
       if( this.tokenStorageService.getUser().roles.includes('ROLE_MAIRE')) {
         this.droits.push("VALIDER")
       }
@@ -53,13 +55,13 @@ export class FormNaissanceComponent implements OnInit {
       mereContact: [this.naissance.mere?.contact],
       mereEmail: [this.naissance.mere?.email],
       dateHeureDeclaration: [this.naissance.dateDeclaration],
-      agentDeclareur: [this.naissance.agentDeclareur],
-      interprete: [this.naissance.interprete],
+      agentDeclareur: [this.naissance.agentDeclareur ? this.naissance.agentDeclareur : this.userConnected.username],
+      interprete: [this.naissance.interprete ? this.naissance.interprete : this.userConnected.username],
       pereExtrait: [this.naissance.pereExtrait],
       mereExtrait: [this.naissance.mereExtrait],
       certificatNaissance: [this.naissance.certificatNaissance],
       carnetNaissance: [''],
-      agentLecteur: [this.naissance.agentLecteur]
+      agentLecteur: [this.naissance.agentLecteur ? this.naissance.agentLecteur : this.userConnected.username]
       // typeDeclaration: [this.naissance., Validators.required],
       // enfantNom: [this.naissance., Validators.required],
       // enfantPrenom: [this.naissance., Validators.required],
@@ -95,6 +97,7 @@ export class FormNaissanceComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.typeNaissance)
+    console.log(this.userConnected)
   }
 
   buildObject(): Naissance {
@@ -151,7 +154,7 @@ export class FormNaissanceComponent implements OnInit {
       (response: Naissance) => {
         this.naissance = response
         alert("Naissance enregistrée")
-        this.goToListe('EN_ATTENTE')
+        this.goToListe('VALIDE')
       },
       (error: HttpErrorResponse) => {
         console.log(error.error.message)

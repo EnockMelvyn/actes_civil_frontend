@@ -6,6 +6,12 @@
         <div class="card-body">
 
             <div class="mb-3">
+                <!-- <label for="numeroActe" class="form-label"> La déclaration:</label> -->
+                <label for="numeroActe" class="form-label"> N° acte:</label>
+                <input type="text" class="form-control" formControlName="numeroActe" id="numeroActe"
+                    [readonly]="mariage.statutActe==='VALIDE'" placeholder="N° Acte">
+            </div>
+            <div class="mb-3">
                 <label for="dateMariage" class="form-label"> Le (Date et heure de mariage):</label>
                 <input type="datetime-local" class="form-control" formControlName="dateMariage" id="dateMariage"
                     [readonly]="mariage.statutActe==='VALIDE'">
@@ -23,9 +29,8 @@
             </div>
             <div class="mb-3">
                 <label for="nomEpoux" class="form-label"> ont comparu publiquement :</label>
-                <input type="text" class="form-control" formControlName="nomEpoux" id="nomEpoux" placeholder="nom">
-                <input type="text" class="form-control" formControlName="prenomEpoux" id="prenomEpoux"
-                    placeholder="prénoms">
+                <input type="text" class="form-control" formControlName="prenomEpoux" id="prenomEpoux" placeholder="prénoms">
+                <input type="text" class="form-control" formControlName="nomEpoux" id="nomEpoux" placeholder="nom">  
             </div>
             <div class="mb-3">
                 <label for="professionEpoux" class="form-label"> Profession:</label>
@@ -72,9 +77,8 @@
 
             <div class="mb-3">
                 <label for="nomEpouse" class="form-label"> et :</label>
-                <input type="text" class="form-control" formControlName="nomEpouse" id="nomEpouse" placeholder="nom">
-                <input type="text" class="form-control" formControlName="prenomEpouse" id="prenomEpouse"
-                    placeholder="prénoms">
+                <input type="text" class="form-control" formControlName="prenomEpouse" id="prenomEpouse" placeholder="prénoms">
+                <input type="text" class="form-control" formControlName="nomEpouse" id="nomEpouse" placeholder="nom">                
             </div>
             <div class="mb-3">
                 <label for="professionEpouse" class="form-label"> Profession:</label>
@@ -126,21 +130,17 @@
                     [readonly]="mariage.statutActe==='VALIDE'" placeholder="témoin de la mariée">
                     Témoins majeurs.
             </div>
-            <div class="mb-3">
-                <label for="numeroActe" class="form-label"> La déclaration:</label>
-                <input type="text" class="form-control" formControlName="numeroActe" id="numeroActe"
-                    [readonly]="mariage.statutActe==='VALIDE'">
-            </div>
+            
 
             <div class="mb-3">
-                <label for="agentDeclareur" class="form-label"> ayant été reçue:</label>
+                <label for="agentDeclareur" class="form-label"> ayant été reçue par:</label>
                 <input type="text" class="form-control" formControlName="agentDeclareur" id="agentDeclareur"
-                    [readonly]="mariage.statutActe==='VALIDE'" placeholder="Nom du déclarant">
+                    readonly placeholder="Nom du déclarant">
             </div>
             <div class="mb-3">
                 <label for="interprete" class="form-label"> avec l'assistance de :</label>
                 <input type="text" class="form-control" formControlName="interprete" id="interprete"
-                    [readonly]="mariage.statutActe==='VALIDE'">
+                    readonly>
                 <p>
                     interprète ayant prêté entre nos mains le serment prévu par la loi.
                     Avant de dresser l'acte, nous avons averti les parties comparantes et les témoins
@@ -176,11 +176,11 @@
             <button class="btn btn-danger" (click)='goToListe(mariage.statutActe!)'> Retour</button>
             <button class="btn btn-primary float-right" *ngIf="!mariage.id" (click)='enregistrerMariage()'>
                 Enregistrer</button>
-            <button class="btn btn-success float-right" *ngIf="mariage.id && mariage.statutActe==='EN_ATTENTE' && droits.includes('APPROUVER')"
-                (click)='majMariage("APPROUVE")'> Approuver</button>
-            <button class="btn btn-success float-right" *ngIf="mariage.id && mariage.statutActe==='APPROUVE' && droits.includes('VALIDER')"
+            <button class="btn btn-success float-right" *ngIf="mariage.id && mariage.statutActe==='EN_ATTENTE'"
+                (click)='approuverMariage()'> Approuver</button>
+            <button class="btn btn-success float-right" *ngIf="mariage.id && mariage.statutActe==='APPROUVE' && droits?.includes('VALIDER')"
                 (click)='majMariage("VALIDE")'> Valider</button>
-            <button class="btn btn-success float-right" *ngIf="mariage.id && mariage.statutActe==='VALIDE' && droits.includes('SIGNER')"
+            <button class="btn btn-success float-right" *ngIf="mariage.id && mariage.statutActe==='VALIDE' && droits?.includes('SIGNER')"
                 (click)='majMariage("SIGNE")'> Signer</button>
             <!-- </div> -->
         </div>

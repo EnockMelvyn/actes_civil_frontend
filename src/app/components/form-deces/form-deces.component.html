@@ -21,8 +21,8 @@
             </div>
             <div class="mb-3">
                 <label for="defuntNom" class="form-label"> est décédé :</label>
-                <input type="text" class="form-control" formControlName="defuntNom"  id="defuntNom" placeholder="nom"> 
                 <input type="text" class="form-control" formControlName="defuntPrenom"  id="defuntPrenom" placeholder="prénoms">
+                <input type="text" class="form-control" formControlName="defuntNom"  id="defuntNom" placeholder="nom">    
             </div>
             <div class="mb-3">
                 <!-- <label for="defuntPrenom" class="form-label"> Prénoms:</label> -->
@@ -78,16 +78,16 @@
             </div>
             <div class="mb-3">
                 <label for="agentDeclareur" class="form-label"> sur la déclaration de:</label>
-                <input type="text" class="form-control" formControlName="agentDeclareur" id="agentDeclareur" [readonly]="deces.statutActe==='VALIDE'" placeholder="Nom du déclarant">
+                <input type="text" class="form-control" formControlName="agentDeclareur" id="agentDeclareur" readonly placeholder="Nom du déclarant">
             </div>
             <div class="mb-3">
                 <label for="interprete" class="form-label"> Avec l'assistance de :</label>
-                <input type="text" class="form-control" formControlName="interprete" id="interprete" [readonly]="deces.statutActe==='VALIDE'">
+                <input type="text" class="form-control" formControlName="interprete" id="interprete" readonly>
                 <p>interprète ayant prêté devant nous le serment prévu par la loi.</p>
             </div>
             <div class="mb-3">
                 <label for="agentLecteur" class="form-label"> Agent lecteur:</label>
-                <input type="text" class="form-control" formControlName="agentLecteur" id="agentLecteur" [readonly]="deces.statutActe==='VALIDE'">
+                <input type="text" class="form-control" formControlName="agentLecteur" id="agentLecteur" readonly>
             </div>
             <!-- <div class="mb-3">
                 <label for="certificatDeces" class="form-label"> Certificat de deces :</label>

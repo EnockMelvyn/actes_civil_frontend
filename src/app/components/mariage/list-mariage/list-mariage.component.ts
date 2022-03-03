@@ -7,6 +7,7 @@ import { Mariage } from 'src/app/interfaces/mariage';
 import { DataService } from 'src/app/services/data.service';
 import { MariageService } from 'src/app/services/mariage.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-list-mariage',
@@ -20,8 +21,9 @@ export class ListMariageComponent implements OnInit , AfterViewInit{
   statut = ''
   statutActe = ''
   titre = ''
+  chemin = environment.jasperserverURL+'/reports/Rapports/Mariage.pdf?id='
   dataSource : MatTableDataSource<Mariage> = new MatTableDataSource 
-  droits : string[]
+  droits : string[] = []
   colonnes= ['numeroActe','epoux', 'epouse','dateMariage','dateDeclaration','agentDeclareur','rendezvous','actions' ]
 
   constructor(private mariageServ : MariageService, private route: ActivatedRoute, private dataService : DataService,
@@ -67,6 +69,33 @@ export class ListMariageComponent implements OnInit , AfterViewInit{
 
   ngAfterViewInit(): void {
       this.dataSource.paginator = this.paginator
+
+      this.dataSource.filterPredicate = (data, filter: string)  => {
+        const accumulator = (currentTerm : any, key : any) => {
+          return this.nestedFilterCheck(currentTerm, data, key);
+        };
+        const dataStr = Object.keys(data).reduce(accumulator, '').toLowerCase();
+        // Transform the filter by converting it to lowercase and removing whitespace.
+        const transformedFilter = filter.trim().toLowerCase();
+        return dataStr.indexOf(transformedFilter) !== -1;
+      };
+  }
+
+  applyFilter(event: any) {
+    this.dataSource.filter = event.target.value.trim().toLowerCase()  
+  }
+
+  nestedFilterCheck(search : any, data: any, key: any) {
+    if (typeof data[key] === 'object') {
+      for (const k in data[key]) {
+        if (data[key][k] !== null) {
+          search = this.nestedFilterCheck(search, data[key], k);
+        }
+      }
+    } else {
+      search += data[key];
+    }
+    return search;
   }
 
   getAllMariages() {

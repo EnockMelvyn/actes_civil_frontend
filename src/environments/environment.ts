@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiBaseURL: "http://localhost:8080/actes"
+  apiBaseURL: "http://localhost:8080/actes",
+  jasperserverURL: "http://localhost:8082/jasperserver/rest_v2"
 };
 
 /*

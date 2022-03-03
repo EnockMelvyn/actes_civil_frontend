@@ -1,9 +1,11 @@
+import { formatDate } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Deces } from 'src/app/interfaces/deces';
+import { DataService } from 'src/app/services/data.service';
 import { DecesService } from 'src/app/services/deces.service';
 import { ListService } from 'src/app/services/list.service';
 
@@ -20,7 +22,8 @@ export class DecesReportComponent implements OnInit, AfterViewInit {
   colonnes= ['numeroActe','defunt', 'dateDeces','dateDeclaration','agentDeclareur']
   statuts : any[]
 
-  constructor(private decesService: DecesService, private formBuilder: FormBuilder, private listService: ListService) { }
+  constructor(private decesService: DecesService, private formBuilder: FormBuilder, private listService: ListService,
+    private dataService: DataService) { }
 
   ngOnInit(): void {
     this.initialisationParam()
@@ -57,4 +60,22 @@ export class DecesReportComponent implements OnInit, AfterViewInit {
       )
     }
   }
+
+  public createExcelArray (donnees :any[]): any[] {
+    let dataToReturn: any[] = []
+    donnees.forEach(element => {
+      dataToReturn.push({
+        'N° Acte': element.numeroActe,
+        'Nom & prénoms': element.defunt.nom+' '+element.defuntprenoms,
+        'Date de déces': element.dateDeces ? formatDate(element.dateDeces ,'dd/MM/yyyy', 'en-US') : null,
+        'Date de déclaration': element.dateDeclaration ? formatDate(element.dateDeclaration ,'dd/MM/yyyy', 'en-US') : null,
+        'Agent déclareur': element.agentDeclareur
+      })
+    });
+    return dataToReturn;
+  }
+
+  public exportToExcel () {
+    this.dataService.exportToExcel(this.createExcelArray(this.dataSource.data),'Décès.xlsx');
+ }
 }

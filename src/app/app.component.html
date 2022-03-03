@@ -13,7 +13,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
+        <a routerLink="/" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
@@ -61,7 +61,7 @@
           <span class="badge badge-warning navbar-badge">{{ rdv.length }} </span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item" *ngFor="let mariage of rdv">
+          <a href="#" class="dropdown-item" *ngFor="let mariage of rdv.slice(0,3)">
             <!-- Message Start -->
             <div class="media">
               <!-- <img src="assets/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle"> -->
@@ -75,7 +75,7 @@
             <!-- Message End -->
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" routerLink="/mariage/liste/valide" class="dropdown-item dropdown-footer">Voir tous les rendez-vous</a>
+          <a routerLink="/mariage/liste/approuve" class="dropdown-item dropdown-footer">Voir tous les rendez-vous</a>
         </div>
       </li>
       <li class="nav-item">
@@ -100,8 +100,8 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4" *ngIf="isLoggedIn">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-      <img src="assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+    <a routerLink="/" class="brand-link">
+      <img src="assets/img/logo_mairie_djebonoua.jpeg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
         style="opacity: .8">
       <span class="brand-text font-weight-light">Etat civil</span>
     </a>
@@ -110,16 +110,17 @@
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
+        <!-- <div class="image">
           <img src="assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
+        </div> -->
         <div class="info" *ngIf="isLoggedIn">
-          <a href="#" class="d-block">{{ username }}</a>
+          <!-- <a href="#" class="d-block">Bienvenue {{ username }}</a> -->
+          Bienvenue {{ username }}
         </div>
       </div>
 
       <!-- SidebarSearch Form -->
-      <div class="form-inline">
+      <!-- <div class="form-inline">
         <div class="input-group" data-widget="sidebar-search">
           <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
@@ -128,7 +129,7 @@
             </button>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -141,7 +142,8 @@
               <p>Dashboard</p>
             </a>
           </li>
-          <li class="nav-item menu-open">
+          <!-- <br> -->
+          <li class="nav-item">
             <a routerLink="/naissance" routerLinkActive="active" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Naissance</p>
@@ -149,20 +151,21 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a routerLink="/naissance/liste/statut/attente" routerLinkActive="active" class="nav-link">
+                <a (click)="goToForm('naissance')" routerLinkActive="active" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Liste d'attente</p>
+                  <p>Enregistrer une naissance</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a routerLink="/naissance/liste/statut/valide" routerLinkActive="active" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Liste validées</p>
+                  <p>Naissances enregistrées</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item menu-open">
+          <!-- <br> -->
+          <li class="nav-item ">
             <a routerLink="/mariage" routerLinkActive="active" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Mariage</p>
@@ -195,7 +198,8 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item menu-open">
+          <!-- <br> -->
+          <li class="nav-item">
             <a routerLink="/deces" routerLinkActive="active" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Décès</p>
@@ -203,20 +207,21 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a routerLink="/deces/liste/attente" routerLinkActive="active" class="nav-link">
+                <a (click)="goToForm('deces')" routerLinkActive="active" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Liste d'attente</p>
+                  <p>Enregistrer un décès</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a routerLink="/deces/liste/valide" routerLinkActive="active" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Liste validées</p>
+                  <p>Décès enregistrés</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item menu-open">
+          <!-- <br> -->
+          <li class="nav-item ">
             <a routerLink="/reporting" routerLinkActive="active" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Reporting</p>
@@ -243,15 +248,22 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item menu-open">
+          <!-- <br> -->
+          <li class="nav-item">
             <a routerLink="/parametre" routerLinkActive="active" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Paramètres</p>
               <i class="right fas fa-angle-left"></i>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item s">
-                <a routerLink="/parametre/utilisateur/liste" routerLinkActive="active" class="nav-link">
+              <li class="nav-item menu-open">
+                <a routerLink="/monProfil" routerLinkActive="active" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Mon profil</p>
+                </a>
+              </li>
+              <li class="nav-items"  *ngIf="droits.includes('UTILISATEURS_LISTE')">
+                <a routerLink="/parametre/utilisateur/liste" routerLinkActive="active" class="nav-link" >
                   <i class="far fa-circle nav-icon"></i>
                   <p>Utilisateurs</p>
                 </a>

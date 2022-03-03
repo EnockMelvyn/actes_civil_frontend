@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -31,6 +31,8 @@ import { FormRdvMariageComponent } from './components/mariage/form-rdv-mariage/f
 import { MariageReportComponent } from './components/reporting/mariage-report/mariage-report.component';
 import { NaissanceReportComponent } from './components/reporting/naissance-report/naissance-report.component';
 import { DecesReportComponent } from './components/reporting/deces-report/deces-report.component';
+import { MonProfilComponent } from './components/utilisateur/mon-profil/mon-profil.component';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,8 @@ import { DecesReportComponent } from './components/reporting/deces-report/deces-
     FormRdvMariageComponent,
     MariageReportComponent,
     NaissanceReportComponent,
-    DecesReportComponent
+    DecesReportComponent,
+    MonProfilComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +69,8 @@ import { DecesReportComponent } from './components/reporting/deces-report/deces-
     MatChipsModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    HighchartsChartModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

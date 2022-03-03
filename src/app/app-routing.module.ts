@@ -15,13 +15,15 @@ import { NaissanceReportComponent } from './components/reporting/naissance-repor
 import { AddRoleToUserComponent } from './components/utilisateur/add-role-to-user/add-role-to-user.component';
 import { FormComponent } from './components/utilisateur/form/form.component';
 import { ListComponent } from './components/utilisateur/list/list.component';
+import { MonProfilComponent } from './components/utilisateur/mon-profil/mon-profil.component';
 import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
   // { path: '**', redirectTo: '' },
   {path:"", redirectTo: '/login', pathMatch: 'full'},
   {path:'login', component: LoginComponent},
-  {path:'accueil', component: AccueilComponent, canActivate : [AuthGuard]},
+  {path:'accueil', component: AccueilComponent},
+  {path:'monProfil', component: MonProfilComponent, canActivate : [AuthGuard]},
   {path:'naissance', children:[
     {path:'liste/statut/:statut', component: ListNaissanceComponent, canActivate : [AuthGuard]},
     {path:'liste/statut', component: ListNaissanceComponent, canActivate : [AuthGuard]},
